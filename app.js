@@ -1,7 +1,9 @@
 const { CommandoClient } = require('discord.js-commando');
+const Discord = require('discord.js');
 const path = require('path');
 require('dotenv').config();
 global.fetch = require('isomorphic-fetch');
+const giphy = require('./config/giphy');
 
 const client = new CommandoClient({
     commandPrefix: '!',
@@ -24,9 +26,16 @@ client.once('ready', () => {
 
 client.login(process.env.BOT_TOKEN);
 
-client.on('message', (msg) => {
-    if (msg.author.id !== client.user.id && msg.content.toLowerCase().includes('milk')) {
-        msg.react('🥛');
+client.on('message', async (msg) => {
+    if (msg.author.id !== client.user.id) {
+        if(msg.content.toLowerCase().includes('milk')) {
+            msg.react('🥛');
+        }
+        if(msg.content.includes('😢') || msg.content.includes('😭') || msg.content.includes('😿') || msg.content.includes('😥') || msg.content.split(' ').includes('') || msg.content.split(' ').includes('sad') || msg.content.split(' ').includes('depressed')) {
+            const {data: randomGif} = await giphy.random({tag: 'spilled milk', limit: 1});
+            let url = randomGif.image_url;
+            return msg.reply(`don't cry over spilt milk`, new Discord.MessageEmbed().setImage(url));
+        }
     }
 });
 
