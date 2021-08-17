@@ -28,7 +28,7 @@ client.login(process.env.BOT_TOKEN);
 
 client.on('message', async (msg) => {
     if (msg.author.id !== client.user.id) {
-        if(msg.content.toLowerCase().includes('milk')) {
+        if(msg.content.toLowerCase().includes('milk') || msg.content.toLowerCase().includes('milj')) {
             msg.react('🥛');
         }
         if(msg.content.includes('😢') || msg.content.includes('😭') || msg.content.includes('😿') || msg.content.includes('😥') || msg.content.split(' ').includes('cry') || msg.content.split(' ').includes('sad') || msg.content.includes(':sad') || msg.content.split(' ').includes('depressed')) {
