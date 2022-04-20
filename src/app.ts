@@ -22,8 +22,10 @@ const client = new Client({
 client.commands = new Collection<unknown, Command>();
 
 if (process.env.IS_PROD) {
-  client.guilds.cache.forEach((guild) => {
-    guild.commands.set([]).catch((e) => console.error(e));
+  client.guilds.fetch().then((guilds) => {
+    guilds.forEach((guild) => {
+      guild.fetch().then((g) => g.commands.set([]));
+    });
   });
 }
 
