@@ -1,6 +1,8 @@
 import { config } from "dotenv";
-import { ActivityOptions, Client, Intents } from "discord.js";
-import { join } from "path";
+import "isomorphic-fetch";
+import {Client, Collection, Command, Intents} from "discord.js";
+import registerCommands from "./utils/registerCommands";
+import registerEvents from "./utils/registerEvents";
 
 /**
  * Initialize environment files
@@ -17,9 +19,14 @@ const client = new Client({
     Intents.FLAGS.GUILD_MESSAGES,
   ],
 });
+client.commands = new Collection<unknown, Command>();
 
 client.once("ready", () => {
   console.log("Bot online.");
+
+  registerCommands(client);
+
+  registerEvents(client);
 });
 
 client.login(process.env.BOT_TOKEN);

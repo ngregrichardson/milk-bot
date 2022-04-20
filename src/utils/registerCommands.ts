@@ -1,6 +1,6 @@
 import fs from "fs";
 import { join } from "path";
-import { Client } from "./definitions";
+import { Client } from "discord.js";
 
 const registerCommands = (client: Client, path = "../commands") => {
   const eventFiles = fs

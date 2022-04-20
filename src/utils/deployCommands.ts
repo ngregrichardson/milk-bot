@@ -30,12 +30,22 @@ const deployCommands = async (path = "../commands") => {
   try {
     console.log("Started refreshing application (/) commands.");
 
-    await rest.put(
-      Routes.applicationCommands(process.env.CLIENT_ID as string),
-      {
-        body: commands,
-      }
-    );
+    if(process.env.IS_DEBUG) {
+      await rest.put(
+          Routes.applicationGuildCommands(process.env.CLIENT_ID as string, process.env.TEST_GUILD_ID as string),
+          {
+            body: commands,
+          }
+      );
+    }else {
+      await rest.put(
+          Routes.applicationCommands(process.env.CLIENT_ID as string),
+          {
+            body: commands,
+          }
+      );
+    }
+
 
     console.log("Successfully reloaded application (/) commands.");
   } catch (error) {

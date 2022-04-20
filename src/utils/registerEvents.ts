@@ -9,12 +9,22 @@ const registerEvents = (client: Client, path = "../events") => {
 
   for (const file of eventFiles) {
     const { default: event } = require(join(path, file));
-    console.log(event);
-    if (event.once) {
-      client.once(event.name, (...args) => event.execute(client, ...args));
+
+    let names = [];
+
+    if (Array.isArray(event.name)) {
+      names = event.name;
     } else {
-      client.on(event.name, (...args) => event.execute(client, ...args));
+      names = [event.name];
     }
+
+    names.forEach((name: string) => {
+      if (event.once) {
+        client.once(name, (...args) => event.execute(client, ...args));
+      } else {
+        client.on(name, (...args) => event.execute(client, ...args));
+      }
+    });
   }
 };
 

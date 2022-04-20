@@ -6,3 +6,5 @@ Dockerfile
 .gitignore
 dist
 .idea
+.github.
+*.env
