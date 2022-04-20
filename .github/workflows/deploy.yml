@@ -23,6 +23,7 @@ jobs:
           echo BOT_TOKEN=$BOT_TOKEN > .env
           echo CLIENT_ID=$CLIENT_ID >> .env
           echo TENOR_API_KEY=$TENOR_API_KEY >> .env
+          echo IS_PROD=true >> .env
 
       - name: Stop Docker
         run: |
