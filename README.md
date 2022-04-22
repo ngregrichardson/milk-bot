@@ -1,4 +1,4 @@
-# 🥛 milk-bot
+# 🥛 Milk Bot
 A Discord bot for complete and udder milkiness.
 
 ## 🤔 About
@@ -7,13 +7,13 @@ A Discord bot for complete and udder milkiness.
 
 ✅ Something make you think about milk? Milk Bot is there to support you.
 
-✅ Want to see some milk? Try `!milk`!
+✅ Want to see some milk? Try `/milk`!
 
 ✅ Feeling down? Milk Bot will always try to cheer you up!
 
 ## 📋 Usage
 
-Want to add Milk Bot to your server? Add him [here](https://discord.com/api/oauth2/authorize?client_id=828325559402364969&permissions=116800&scope=bot)!
+Want to add Milk Bot to your server? Add him [here](https://discord.com/api/oauth2/authorize?client_id=828325559402364969&permissions=274878123072&scope=bot%20applications.commands)!
 
 ## 🙏 Contributing
 
