@@ -7,9 +7,8 @@
     "start": "tsc && yarn deployCommands && node dist/app.js",
     "dev": "tsc-watch --onSuccess \"node dist/app.js\"",
     "lint": "tslint ./src/**",
-    "deployCommands": "tsc && node dist/utils/deploycommands.js",
-    "testCommands": "cross-env IS_DEBUG=true yarn deployCommands",
-    "docker-build": "docker build . --tag milk-bot"
+    "deployCommands": "tsc && node dist/utils/deployCommands.js",
+    "testCommands": "cross-env IS_DEBUG=true yarn deployCommands"
   },
   "author": "",
   "license": "ISC",
