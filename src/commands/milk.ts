@@ -3,10 +3,10 @@ import { CommandInteraction } from "discord.js";
 import { getGifUrl } from "../utils/tenor";
 
 const execute = async (interaction: CommandInteraction) => {
-  await interaction.reply({ content: await getGifUrl() });
+    await interaction.reply({ content: await getGifUrl() });
 };
 
 export default {
-  data: new SlashCommandBuilder().setName("milk").setDescription("Milk!"),
-  execute,
+    data: new SlashCommandBuilder().setName("milk").setDescription("Milk!"),
+    execute,
 };

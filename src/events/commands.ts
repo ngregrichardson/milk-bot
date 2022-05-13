@@ -1,19 +1,22 @@
-import {Client, Interaction} from "discord.js";
+import { Client, Interaction } from "discord.js";
 
 export default {
-    name: 'interactionCreate',
+    name: "interactionCreate",
     execute: async (client: Client, interaction: Interaction) => {
-        if(!interaction.isCommand()) return;
+        if (!interaction.isCommand()) return;
 
         const command = client.commands.get(interaction.commandName);
 
-        if(!command) return;
+        if (!command) return;
 
         try {
             await command.execute(interaction);
-        }catch(error) {
+        } catch (error) {
             console.error(error);
-            await interaction.reply({content: "There was an error while executing this command!", ephemeral: true });
+            await interaction.reply({
+                content: "There was an error while executing this command!",
+                ephemeral: true,
+            });
         }
-    }
-}
+    },
+};

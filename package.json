@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node dist/app.js",
+    "start": "tsc && yarn deployCommands && node dist/app.js",
     "dev": "tsc-watch --onSuccess \"node dist/app.js\"",
     "lint": "tslint ./src/**",
     "deployCommands": "tsc && node dist/utils/deploycommands.js",
