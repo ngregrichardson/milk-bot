@@ -1,4 +1,5 @@
 import { Client, Message } from "discord.js";
+import { getTextFromImage } from "../utils/textFromImage";
 
 const keywords = ["milk", "milj", "🥛", "🍼", "🌌"];
 
@@ -11,18 +12,37 @@ export default {
     ) => {
         const message = newMessage || oldMessage;
 
-        for (const keywordIndex in keywords) {
-            if (
-                message.content
-                    ?.toLowerCase()
-                    .includes(keywords[keywordIndex]) ||
-                message.attachments.find(
-                    (attachment) =>
-                        !!attachment.name
-                            ?.toLowerCase()
-                            .includes(keywords[keywordIndex])
-                )
-            ) {
+        let searchableParts = [];
+
+        if (message.content) {
+            searchableParts.push(message.content || "");
+        }
+
+        if (message.attachments) {
+            searchableParts = [
+                ...searchableParts,
+                ...message.attachments.map((a) => a.name),
+            ];
+
+            for (const attachment of Array.from(message.attachments.values())) {
+                const foundText = await getTextFromImage(attachment.url);
+
+                if (foundText) {
+                    searchableParts.push(foundText);
+                }
+            }
+        }
+
+        for (const keyword of keywords) {
+            let hasMilk = false;
+            for (const part of searchableParts) {
+                if (part?.toLowerCase().includes(keyword.toLowerCase())) {
+                    hasMilk = true;
+                    break;
+                }
+            }
+
+            if (hasMilk) {
                 try {
                     await message.react("🥛");
                     return;
