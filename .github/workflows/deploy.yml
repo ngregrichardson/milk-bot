@@ -27,10 +27,9 @@ jobs:
 
       - name: Stop Docker
         run: |
-          docker stop milk-bot
-          docker rm milk-bot
+          docker compose down --rmi
         continue-on-error: true
       - name: Build Docker Image
         run: docker build -t milk-bot .
       - name: Start Docker
-        run: docker compose up -d
+        run: docker compose up --detach
