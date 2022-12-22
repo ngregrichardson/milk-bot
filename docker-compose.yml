@@ -1,0 +1,5 @@
+version: '3.3'
+services:
+    milk-bot:
+        container_name: milk-bot
+        image: milk-bot

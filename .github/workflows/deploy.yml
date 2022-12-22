@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: [self-hosted, primary]
+    runs-on: [self-hosted, prod]
     timeout-minutes: 5
 
     steps:
@@ -33,4 +33,4 @@ jobs:
       - name: Build Docker Image
         run: docker build -t milk-bot .
       - name: Start Docker
-        run: docker run -d --name milk-bot --env-file .env milk-bot
+        run: docker compose up -d
