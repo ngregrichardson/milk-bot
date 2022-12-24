@@ -32,4 +32,4 @@ jobs:
       - name: Build Docker Image
         run: docker build -t milk-bot .
       - name: Start Docker
-        run: docker compose up --detach
+        run: docker compose up --detach --env-file .env
