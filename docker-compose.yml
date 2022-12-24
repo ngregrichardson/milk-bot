@@ -3,3 +3,5 @@ services:
     milk-bot:
         container_name: milk-bot
         image: milk-bot
+        env_file:
+        - .env
