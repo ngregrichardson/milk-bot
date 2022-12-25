@@ -3,6 +3,16 @@ import { getTextFromImage } from "../utils/textFromImage";
 
 const keywords = ["milk", "milj", "🥛", "🍼", "🌌"];
 
+const stringHasMilk = (str: string): boolean => {
+    for (const keyword of keywords) {
+        if (str.toLowerCase().includes(keyword.toLowerCase())) {
+            return true;
+        }
+    }
+
+    return false;
+} 
+
 export default {
     name: ["messageCreate", "messageUpdate"],
     execute: async (
@@ -12,63 +22,55 @@ export default {
     ) => {
         const message = newMessage || oldMessage;
 
-        let searchableParts = [];
+        let hasMilk = false;
 
         if (message.content) {
-            searchableParts.push(message.content || "");
+            hasMilk = stringHasMilk(message.content || "");
         }
 
-        if (message.attachments) {
-            searchableParts = [
-                ...searchableParts,
-                ...message.attachments.map((a) => a.name),
-            ];
-
-            const imagePromises = Array.from(message.attachments.values()).map(
-                (a) => {
-                    if(a.contentType?.toLowerCase().includes("image")) {
-                        return getTextFromImage(a.url);
-                    }else {
-                        return Promise.reject("");
-                    }
-                }
-            );
-
-            for (const attachment of Array.from(message.attachments.values())) {
-                imagePromises.push(getTextFromImage(attachment.url));
-            }
-
-            Promise.allSettled(imagePromises).then((results) => {
-                results.forEach((result) => {
-                    if (result.status === "fulfilled") {
-                        searchableParts.push(result.value);
-                    }
-                });
-            }).catch(e => {
-                console.error(e);
-            });
-        }
-
-        for (const keyword of keywords) {
-            let hasMilk = false;
-            for (const part of searchableParts) {
-                if (part?.toLowerCase().includes(keyword.toLowerCase())) {
+        if (!hasMilk && message.attachments) {
+            const attachments = Array.from(message.attachments.values());
+            for(const attachment of attachments) {
+                if(attachment.name && stringHasMilk(attachment.name)) {
                     hasMilk = true;
                     break;
                 }
             }
 
-            if (hasMilk) {
-                try {
-                    await message.react("🥛");
-                    return;
-                } catch (error) {
-                    console.error(error);
-                }
+            if(!hasMilk) {
+                const imagePromises = attachments.map((a) => {
+                    if (a.contentType?.toLowerCase().includes("image")) {
+                        return getTextFromImage(a.url);
+                    } else {
+                        return Promise.reject("");
+                    }
+                });
+
+                Promise.allSettled(imagePromises)
+                    .then((results) => {
+                        for(const result of results) {
+                            if(result.status === "fulfilled" && stringHasMilk(result.value)) {
+                                hasMilk = true;
+                                break;
+                            }
+                        }
+                    })
+                    .catch((e) => {
+                        console.error(e);
+                    });
             }
         }
 
-        if (newMessage) {
+        if (hasMilk) {
+            try {
+                await message.react("🥛");
+                return;
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        if (!hasMilk && newMessage) {
             const milkBotReactions = message.reactions.cache.filter(
                 (reaction) => reaction.emoji.name === "🥛" && reaction.me
             );
