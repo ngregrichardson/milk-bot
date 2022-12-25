@@ -17,7 +17,7 @@
     "discord.js": "^13.3.0",
     "dotenv": "^16.0.0",
     "isomorphic-fetch": "^3.0.0",
-    "node-text-from-image": "^1.0.0"
+    "tesseract.js": "^4.0.2"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

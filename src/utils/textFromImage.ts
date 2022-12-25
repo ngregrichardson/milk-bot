@@ -1,14 +1,9 @@
-import extractTextFromImage from "node-text-from-image";
+import Tesseract from "tesseract.js";
 
-export const getTextFromImage = async (url: string) => {
-    try {
-        const request = await fetch(url);
-        const buffer = Buffer.from(await request.arrayBuffer());
-
-        return extractTextFromImage(buffer);
-    } catch (e) {
-        console.error(e);
-    }
-
-    return null;
+export const getTextFromImage = async (url: string): Promise<string> => {
+    return new Promise((res, rej) => {
+        Tesseract.recognize(url, "eng")
+            .then(({ data: { text } }) => res(text))
+            .catch(rej);
+    })
 };

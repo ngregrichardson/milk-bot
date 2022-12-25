@@ -24,13 +24,29 @@ export default {
                 ...message.attachments.map((a) => a.name),
             ];
 
-            for (const attachment of Array.from(message.attachments.values())) {
-                const foundText = await getTextFromImage(attachment.url);
-
-                if (foundText) {
-                    searchableParts.push(foundText);
+            const imagePromises = Array.from(message.attachments.values()).map(
+                (a) => {
+                    if(a.contentType?.toLowerCase().includes("image")) {
+                        return getTextFromImage(a.url);
+                    }else {
+                        return Promise.reject("");
+                    }
                 }
+            );
+
+            for (const attachment of Array.from(message.attachments.values())) {
+                imagePromises.push(getTextFromImage(attachment.url));
             }
+
+            Promise.allSettled(imagePromises).then((results) => {
+                results.forEach((result) => {
+                    if (result.status === "fulfilled") {
+                        searchableParts.push(result.value);
+                    }
+                });
+            }).catch(e => {
+                console.error(e);
+            });
         }
 
         for (const keyword of keywords) {
