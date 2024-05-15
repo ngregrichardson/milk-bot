@@ -1,0 +1,14 @@
+name: milk-bot
+
+services:
+  milk-bot:
+    image: ngregrichardson/milk-bot
+    container_name: milk-bot
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DISCORD_TOKEN
+      - TENOR_API_KEY
+      - DATABASE_URL
