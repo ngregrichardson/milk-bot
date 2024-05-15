@@ -1,4 +1,4 @@
-FROM node:20-slim as base
+FROM node:20 as base
 WORKDIR /app
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PNPM_HOME}:$PATH"
