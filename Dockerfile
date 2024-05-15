@@ -1,5 +1,8 @@
-FROM node:20 as base
+FROM node:20-slim as base
 WORKDIR /app
+ENV PNPM_HOME="/pnpm"
+ENV PATH="${PNPM_HOME}:$PATH"
+RUN corepack enable
 
 FROM base as install
 
@@ -23,6 +26,7 @@ COPY --from=install /temp/prod/node_modules node_modules
 COPY --from=build /app/dist /app/dist
 COPY --from=build /app/migrations migrations
 COPY --from=build /app/package.json .
+COPY --from=build /app/commandkit.mjs .
 COPY --from=build /app/drizzle.config.ts .
 
 ENTRYPOINT ["pnpm", "start"]
