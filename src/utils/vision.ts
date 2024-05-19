@@ -1,6 +1,8 @@
 import { ImageAnnotatorClient } from "@google-cloud/vision";
 
-const client = new ImageAnnotatorClient();
+const client = new ImageAnnotatorClient({
+	credentials: process.env.GCP_CREDENTIALS ? JSON.parse(process.env.GCP_CREDENTIALS) : undefined,
+});
 
 export const getImageText = async (url: string) => {
 	try {
